@@ -1,76 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Age Calculator-SM</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="calculator">
-            <h1>Find Urs!! <br> <span>Age Calculator</span></h1>
-            <div class="input-box">
-                <input type="date" id="date">
-                <button onclick="calculateAge()">Calculate</button>
-            </div>
-            <p id="result"></p>
+      <div class="calculator">
+        <h1>
+          <span>Horizon Elementary Super Duper Fancy Grade Calculator</span>
+        </h1>
+        <div class="input-box">
+          <input type="date" id="date" />
+          <button id="calculateButton" onclick="calculateGrade()">
+            Calculate
+          </button>
         </div>
-        <video src="96208-carbon-calculator.mp4" autoplay loop class="video"></video>
-        <footer><center>Made with ❤️ By Mr. Sujit</center></footer>
+        <p id="result"></p>
+      </div>
+      <video
+        src="96208-carbon-calculator.mp4"
+        autoplay
+        loop
+        class="video"
+      ></video>
     </div>
     <script>
-        let userInput = document.getElementById("date");
-        userInput.max = new Date().toISOString().split("T")[0];
-        let result = document.getElementById("result");
+      let userInput = document.getElementById("date");
+      userInput.max = new Date().toISOString().split("T")[0];
+      let result = document.getElementById("result");
 
-        function calculateAge(){
-            let birthDate = new Date(userInput.value);
+      document
+        .getElementById("date")
+        .addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            calculateGrade();
+          }
+        });
 
-            let d1 = birthDate.getDate();
-            let m1 = birthDate.getMonth() + 1;
-            let y1 = birthDate.getFullYear();
+      function calculateGrade() {
+        let birthDate = new Date(userInput.value);
+        let today = new Date();
+        console.log("bday", birthDate);
+        console.log("today", today);
 
-            let today = new Date();
-
-            let d2 = today.getDate();
-            let m2 = today.getMonth() + 1;
-            let y2 = today.getFullYear();
-
-            let d3, m3, y3;
-
-            y3 = y2 - y1;
-
-            if(m2 >= m1){
-                m3 = m2 - m1;
-            }
-            else{
-                y3--;
-                m3 = 12 + m2 - m1;
-            }
-
-            if(d2 >= d1){
-                d3 = d2 - d1;
-            }
-            else{
-                m3--;
-                d3 = getDaysInMonth(y1, m1) + d2 - d1;
-            }
-            if(m3 < 0)
-            {
-                m3 = 11;
-                y3--;
-            }
-
-            result.innerHTML = `Hey!! You are <span>${y3}</span> years, <span>${m3}</span> months, <span>${d3}</span> days old.`;
-        
+        let currentYear = today.getFullYear();
+        console.log("current year", currentYear);
+        let cutoffDate = new Date(currentYear, 8, 1); // September 1 of current year
+        console.log("school start date", cutoffDate);
+        if (today < cutoffDate) {
+          cutoffDate.setFullYear(currentYear - 1);
         }
 
-    function getDaysInMonth(year, month){
-        return new Date(year, month, 0).getDate();
-    }
+        let age = cutoffDate.getFullYear() - birthDate.getFullYear();
+        console.log("age", age);
+        if (birthDate > cutoffDate.setFullYear(birthDate.getFullYear())) {
+          age--;
+        }
 
+        let grade;
+        const isBirthdayBeforeCutoff =
+          birthDate.getMonth() < 9 ||
+          (birthDate.getMonth() === 9 && birthDate.getDate() === 1);
+        console.log("isBirthdayBeforeCutoff", isBirthdayBeforeCutoff);
+        if (isBirthdayBeforeCutoff) {
+          age++;
+        }
+        if (age < 5) {
+          grade = "Not in elementary school yet 🥺";
+        } else if (age === 5) {
+          grade = "Kindergarten";
+        } else if (age >= 6 && age <= 11) {
+          grade = age - 5;
+        } else {
+          grade = "Beyond elementary school";
+        }
+
+        if (typeof grade === "number") {
+          result.innerHTML = `You are in <span>${grade}${getOrdinalSuffix(
+            grade
+          )}</span> grade.`;
+        } else {
+          result.innerHTML = `<span>${grade}</span>`;
+        }
+      }
+
+      function getOrdinalSuffix(num) {
+        const j = num % 10,
+          k = num % 100;
+        if (j == 1 && k != 11) {
+          return "st";
+        }
+        if (j == 2 && k != 12) {
+          return "nd";
+        }
+        if (j == 3 && k != 13) {
+          return "rd";
+        }
+        return "th";
+      }
+
+      function getDaysInMonth(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
     </script>
-</body>
+  </body>
 </html>
