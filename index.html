@@ -19,7 +19,7 @@
             Calculate
           </button>
         </div>
-        <p id="result"></p>
+        <h2 id="result"></h2>
       </div>
       <video
         src="96208-carbon-calculator.mp4"
@@ -44,19 +44,13 @@
       function calculateGrade() {
         let birthDate = new Date(userInput.value);
         let today = new Date();
-        console.log("bday", birthDate);
-        console.log("today", today);
-
         let currentYear = today.getFullYear();
-        console.log("current year", currentYear);
         let cutoffDate = new Date(currentYear, 8, 1); // September 1 of current year
-        console.log("school start date", cutoffDate);
         if (today < cutoffDate) {
           cutoffDate.setFullYear(currentYear - 1);
         }
 
         let age = cutoffDate.getFullYear() - birthDate.getFullYear();
-        console.log("age", age);
         if (birthDate > cutoffDate.setFullYear(birthDate.getFullYear())) {
           age--;
         }
@@ -65,7 +59,6 @@
         const isBirthdayBeforeCutoff =
           birthDate.getMonth() < 9 ||
           (birthDate.getMonth() === 9 && birthDate.getDate() === 1);
-        console.log("isBirthdayBeforeCutoff", isBirthdayBeforeCutoff);
         if (isBirthdayBeforeCutoff) {
           age++;
         }
@@ -80,11 +73,11 @@
         }
 
         if (typeof grade === "number") {
-          result.innerHTML = `You are in <span>${grade}${getOrdinalSuffix(
+          result.innerHTML = `<h2>You are in ${grade}${getOrdinalSuffix(
             grade
-          )}</span> grade.`;
+          )} grade.</h2>`;
         } else {
-          result.innerHTML = `<span>${grade}</span>`;
+          result.innerHTML = `<h2>${grade}</h2>`;
         }
       }
 
